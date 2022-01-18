@@ -1,0 +1,76 @@
+
+<html>
+<head><meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <style type="text/css">
+    html, body, #map-canvas { height: 100%; margin: 0; padding: 0;}
+  </style>
+  <script type="text/javascript"
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAW7xhgNX97J4PMZFNKwGEk2laZboqPj6E">
+  </script>
+  <script type="text/javascript">
+    var map;
+    function initialize() {
+      var mapOptions = {
+        center: { lat: 25.049916828266074, lng: 121.53192077586353},
+        zoom: 14
+      };
+       map = new google.maps.Map(
+          document.getElementById('map-canvas'),
+          mapOptions);
+    }
+    google.maps.event.addDomListener(
+        window, 'load', initialize);6
+  </script>
+<title>淡江大學 2021雲端運算課程 OpenData</title>
+</head>
+<body>
+ <script type="text/JavaScript">
+
+ function  listStation(stations)
+ {
+  for(var i=0;i<stations.length;i++)
+  {
+      var stationName=stations[i].sna;
+      var stationSbi=stations[i].sbi;
+      var stationBemp=stations[i].bemp;
+      var stationLatLng={lat: stations[i].lat, lng: stations[i].lng};
+      var iconColor;
+      if(stations[i].bemp==0)
+      {
+        iconColor='http://maps.google.com/mapfiles/ms/icons/yellow-dot.png';
+      }
+      else if(stationSbi=stations[i].sbi==0)
+      {
+        iconColor='http://maps.google.com/mapfiles/ms/icons/blue-dot.png';
+      }
+      
+      else{
+        iconColor='http://maps.google.com/mapfiles/ms/icons/green-dot.png';
+      }
+      //console.log(stationName+"("+stationSbi+")");
+      new google.maps.Marker({
+          position: stationLatLng,
+          icon: iconColor,
+          map,
+          title: stationName,
+  });
+
+  }
+
+ }
+   
+  
+fetch('https://tcgbusfs.blob.core.windows.net/dotapp/youbike/v2/youbike_immediate.json', { 
+  method: 'GET'
+})
+.then(function(response) { return response.json(); })
+.then(function(json) {
+  // use the json
+
+	listStation(json);
+  
+});
+  </script>
+ <div id="map-canvas"></div>
+</body>
+</html>
